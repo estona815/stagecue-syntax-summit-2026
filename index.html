@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071321">
+  <meta name="description" content="StageCue is a small domain-specific language for testing theater cue timing in a browser simulation.">
+  <title>StageCue — write the show, see the timing</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><h1>Stage<span>Cue</span></h1><p>Write the show. See the timing.</p></div>
+      <div class="topbar-right"><span class="sim-badge">BROWSER SIMULATION</span><a href="#language-guide">Language guide ↗</a></div>
+    </header>
+
+    <main class="workspace">
+      <section class="editor-panel panel" aria-labelledby="editor-title">
+        <div class="panel-top"><div><p class="eyebrow">01 / SOURCE</p><h2 id="editor-title">Cue script</h2></div><label class="example-select">Example <select id="example"><option value="midnight">Midnight Conversation</option><option value="collision">Collision Study</option><option value="blank">Blank script</option></select></label></div>
+        <div class="file-tab">script.stage <span id="line-count">0 lines</span></div>
+        <label class="visually-hidden" for="source">StageCue source</label>
+        <textarea id="source" spellcheck="false" aria-describedby="syntax-tip"></textarea>
+        <div class="editor-bottom"><span id="syntax-tip">One cue per block. Times use seconds.</span><button type="button" id="compile">Check &amp; stage <span aria-hidden="true">→</span></button></div>
+      </section>
+
+      <section class="preview-panel panel" aria-labelledby="preview-title">
+        <div class="panel-top"><div><p class="eyebrow">02 / SIMULATION</p><h2 id="preview-title">Stage preview</h2></div><span id="now-label" class="now-label">Ready to stage</span></div>
+        <div id="stage" class="stage" role="img" aria-label="Abstract theater preview with adjustable simulated lighting">
+          <div class="stage-ceiling"></div>
+          <div class="beam beam-left"></div><div class="beam beam-center"></div><div class="beam beam-right"></div>
+          <div class="back-wall"><div class="door"></div><div class="window"></div><div class="table"><i></i></div><div class="chair chair-left"></div><div class="chair chair-right"></div></div>
+          <div class="stage-floor"></div>
+          <div class="stage-curtain left"></div><div class="stage-curtain right"></div>
+          <div class="caption-card"><span id="current-cue">No cue selected</span><p id="current-caption">Check the script to preview your show.</p><small id="current-sound">Sound: none</small></div>
+        </div>
+        <div class="preview-footer"><div class="light-key"><span><i class="key-left"></i>Left</span><span><i class="key-center"></i>Center</span><span><i class="key-right"></i>Right</span></div><p>Visual and audio simulation only · no theater hardware connection</p></div>
+      </section>
+
+      <aside class="inspector-panel panel" aria-labelledby="inspector-title">
+        <div class="panel-top"><div><p class="eyebrow">03 / INSPECTOR</p><h2 id="inspector-title">Cues &amp; diagnostics</h2></div><span id="issue-count" class="issue-count">0 issues</span></div>
+        <div class="inspector-scroll"><div class="list-heading"><span>CUE</span><span>START</span><span>STATUS</span></div><div id="cue-list" class="cue-list"></div><div class="diagnostics"><h3>Checks</h3><div id="diagnostics-list"></div></div></div>
+      </aside>
+    </main>
+
+    <section class="transport panel" aria-label="Show playback and timeline">
+      <div class="transport-controls"><button type="button" id="play" class="play-button">▶ <span>Run show</span></button><button type="button" id="stop" class="icon-button" aria-label="Stop">■</button><span id="time-readout" class="time-readout">00:00 / 00:00</span><label class="speed">Speed <select id="speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></label><button type="button" id="mute" class="icon-button mute" aria-label="Mute simulated audio" aria-pressed="false">♫</button></div>
+      <div class="timeline-wrap"><div class="ruler"><span>0:00</span><span id="mid-time">0:00</span><span id="end-time">0:00</span></div><div id="timeline" class="timeline"></div><input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Scrub show time"><div class="timeline-legend"><span><i></i>Cue duration</span><span><i></i>Overlap warning</span></div></div>
+    </section>
+
+    <section id="language-guide" class="guide" aria-labelledby="guide-title"><div><p class="eyebrow">THE LANGUAGE</p><h2 id="guide-title">Small syntax. Clear timing.</h2><p>StageCue parses a line-based show script into cue blocks. Each cue has a start time and duration, plus optional light levels, a caption, and a built-in procedural sound. Light settings apply only to that cue. Overlapping cue windows are flagged, while playback stays available so you can inspect the conflict.</p></div><pre><code>show "A Midnight Conversation"
+length 90s
+
+cue "Opening" at 0s for 20s
+  light left 65%
+  light center 30%
+  caption "The room is quiet."
+  sound chime
+end</code></pre><div class="guide-reference"><strong>Commands</strong><p><code>show</code> title · <code>length</code> seconds · <code>cue</code> name / start / duration · <code>light</code> left|center|right 0–100% · <code>caption</code> quoted text · <code>sound</code> none|chime|pulse · <code>end</code></p><p>Created as an educational prototype. Do not use this simulation to operate a live performance.</p></div></section>
+    <footer class="footer"><span>StageCue · An original DSL prototype for Syntax Summit</span><span>Built with HTML, CSS, JavaScript, and Web Audio</span></footer>
+  </div>
+</body>
+</html>
