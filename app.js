@@ -148,7 +148,7 @@ function parse(input) {
   for (let i=0;i<ordered.length;i++) for (let j=i+1;j<ordered.length;j++) {
     const a=ordered[i], b=ordered[j];
     if (b.start >= a.start+a.duration) break;
-    result.issues.push(issue("warning",b.line,`“${b.name}” overlaps “${a.name}” by ${(a.start+a.duration-b.start).toFixed(1).replace(/\.0$/,'')}s.`,[a.name,b.name]));
+    result.issues.push(issue("warning",b.line,`“${b.name}” overlaps “${a.name}” by ${(Math.min(a.start+a.duration,b.start+b.duration)-b.start).toFixed(1).replace(/\.0$/,'')}s.`,[a.name,b.name]));
   }
   result.cues = ordered;
   return result;
